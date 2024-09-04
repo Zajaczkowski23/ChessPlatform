@@ -1,0 +1,36 @@
+.chessboard-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.chessboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(90deg);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.square {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.green-square {
+  background-color: #769656;
+}
+
+.white-square {
+  background-color: #eeeed2;
+}
+
+.piece {
+  font-size: 40px;
+  transform: rotate(-90deg);
+}

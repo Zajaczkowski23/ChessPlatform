@@ -6,10 +6,9 @@
 }
 
 .chessboard {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: rotate(90deg);
+  display: grid;
+  grid-template-columns: repeat(8, 75px);
+  grid-template-rows: repeat(8, 75px);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -32,5 +31,4 @@
 
 .piece {
   font-size: 40px;
-  transform: rotate(-90deg);
 }

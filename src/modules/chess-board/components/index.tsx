@@ -1,42 +1,38 @@
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { useState } from "react";
 import "../style/chessboard.css";
-import ChessSquare from "./ChessSquare";
+import { initialBoard } from "../utils/chessboard";
+import ChessRow from "./ChessRow";
 
 const Chessboard = () => {
-  const initialBoard = [
-    ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-    ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-    ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
-  ];
+  const [boardState, setBoardState] = useState(initialBoard);
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (over) {
+      const activeId = (active.id as string).split("-");
+      const overId = (over.id as string).split("-");
+
+      const newBoardState = [...boardState];
+      const piece = newBoardState[parseInt(activeId[0])][parseInt(activeId[1])];
+      newBoardState[parseInt(activeId[0])][parseInt(activeId[1])] = null;
+      newBoardState[parseInt(overId[0])][parseInt(overId[1])] = piece;
+      setBoardState(newBoardState);
+    }
+  }
 
   const board = [];
 
   for (let row = 0; row < 8; row++) {
-    const squares = [];
-
-    for (let col = 0; col < 8; col++) {
-      const isBlack = (row + col) % 2 === 1;
-      const piece = initialBoard[row][col];
-      squares.push(
-        <ChessSquare col={col} isBlack={isBlack} piece={piece} row={row} />
-      );
-    }
-
-    board.push(
-      <div key={row} className="row">
-        {squares}
-      </div>
-    );
+    board.push(<ChessRow key={row} row={row} boardState={boardState} />);
   }
 
   return (
-    <div className="chessboard-wrapper">
-      <div className="chessboard">{board}</div>
-    </div>
+    <DndContext onDragEnd={handleDragEnd}>
+      <div className="chessboard-wrapper">
+        <div className="chessboard">{board}</div>
+      </div>
+    </DndContext>
   );
 };
 
